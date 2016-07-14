@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMessages.setHasFixedSize(false);
         mMessages.setLayoutManager(mManager);
 
-        //getChildren();
+//        mMessages.scrollToPosition(getChildren());
 
         mMessages.setHasFixedSize(true);
         mMessages.setLayoutManager(new LinearLayoutManager(this));
@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mSend) {
+            getChildren();
             //int hello = getChildren();
             //mMessages.scrollToPosition(hello - 1);
             String message = mCommentEditText.getText().toString();
@@ -131,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mFirebaseRef.push().setValue(comment);
 
             mCommentEditText.setText("");
-            getChildren();
         }
     };
 
