@@ -4,22 +4,22 @@ package com.example.guest.listenup.models;
  * Created by Guest on 7/14/16.
  */
 public class Comment {
-    private String Content;
-    private String User;
+    private String content;
+    private String user;
 
     public Comment() {}
 
     public Comment(String content, String user) {
-        this.Content = content;
-        this.User = user;
+        this.content = content;
+        this.user = user;
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public String getUser() {
-        return User;
+        return user;
     }
 }
 
