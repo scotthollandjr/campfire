@@ -6,11 +6,19 @@
     android:layout_height="fill_parent"
     tools:context="com.example.guest.listenup.ui.MainActivity">
 
+    <ScrollView
+        android:id="@+id/activity_chat_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:padding="10dp" >
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/footer"/>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/footer"
@@ -44,6 +52,5 @@
         android:clipToPadding="false"
         android:padding="16dp"
         tools:listitem="@layout/message" />
-
 
 </RelativeLayout>

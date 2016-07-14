@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.guest.listenup.R;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String userName;
     private RecyclerView mMessages;
     private LinearLayoutManager mManager;
+    private ScrollView mScrollView;
     private FirebaseListAdapter<Comment> mAdapter;
 
 //    private ChatListAdapter mChatListAdapter;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         Firebase.setAndroidContext(this);
 
+        mScrollView = (ScrollView) findViewById(R.id.activity_chat_scroll_view);
         FirebaseRecyclerAdapter<Comment, CommentHolder> mAdapter;
         mFirebaseRef = new Firebase("https://listenup-51c14.firebaseio.com/");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 viewHolder.setComment(model.getContent());
             }
         };
+
         mMessages.setAdapter(mAdapter);
 
         mAuth = FirebaseAuth.getInstance();
@@ -101,9 +105,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSend.setOnClickListener(this);
     }
 
+    private void scrollToBottom() {
+        mScrollView.post(new Runnable() {
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         if (v == mSend) {
+            scrollToBottom();
             String message = mCommentEditText.getText().toString();
             Comment comment = new Comment(message, userName);
             mFirebaseRef.push().setValue(comment);
@@ -111,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mCommentEditText.setText("");
         }
     };
+
 
     @Override
     public void onStart() {
