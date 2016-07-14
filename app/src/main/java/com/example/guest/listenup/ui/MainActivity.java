@@ -1,41 +1,42 @@
 package com.example.guest.listenup.ui;
 
-import android.app.ListActivity;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
+
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
+
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.TextView;
+
 
 import com.example.guest.listenup.R;
 import com.example.guest.listenup.models.Comment;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayoutManager mManager;
     private ScrollView mScrollView;
     private FirebaseListAdapter<Comment> mAdapter;
-
-//    private ChatListAdapter mChatListAdapter;
+    private ArrayList<Comment> commentList;
+    private long children;
+    private int childInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +70,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         mMessages = (RecyclerView) findViewById(R.id.messagesList);
 
+
+
         mManager = new LinearLayoutManager(this);
         mManager.setReverseLayout(false);
 
         mMessages.setHasFixedSize(false);
         mMessages.setLayoutManager(mManager);
 
+        //getChildren();
 
         mMessages.setHasFixedSize(true);
         mMessages.setLayoutManager(new LinearLayoutManager(this));
+        mManager.setStackFromEnd(true);
+
         Query lastFifty = ref.limitToLast(50);
         mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, lastFifty) {
             @Override
@@ -105,25 +112,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSend.setOnClickListener(this);
     }
 
-    private void scrollToBottom() {
-        mScrollView.post(new Runnable() {
-            public void run() {
-                mScrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-    }
+//    private void scrollToBottom() {
+//        mRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//            @Override
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                mManager.smoothScrollToPosition(mMessages, null, mRecyclerViewAdapter.getItemCount());
+//            }
+//        });
+//    }
 
     @Override
     public void onClick(View v) {
         if (v == mSend) {
-            scrollToBottom();
+            //int hello = getChildren();
+            //mMessages.scrollToPosition(hello - 1);
             String message = mCommentEditText.getText().toString();
             Comment comment = new Comment(message, userName);
             mFirebaseRef.push().setValue(comment);
 
             mCommentEditText.setText("");
+            getChildren();
         }
     };
+
+    public void getChildren() {
+        mFirebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("stuff", dataSnapshot.getChildrenCount() +"");
+                children = dataSnapshot.getChildrenCount();
+                childInt = (int) (long) children;
+                mMessages.scrollToPosition(childInt - 1);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+
+        //mMessages.scrollToPosition(childInt);
+    }
 
 
     @Override
