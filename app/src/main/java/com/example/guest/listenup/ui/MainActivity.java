@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Firebase.setAndroidContext(this);
 
         mScrollView = (ScrollView) findViewById(R.id.activity_chat_scroll_view);
-        FirebaseRecyclerAdapter<Comment, CommentHolder> mAdapter;
+        final FirebaseRecyclerAdapter<Comment, CommentHolder> mAdapter;
         mFirebaseRef = new Firebase("https://listenup-51c14.firebaseio.com/");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         mMessages = (RecyclerView) findViewById(R.id.messagesList);
@@ -79,15 +79,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMessages.setLayoutManager(new LinearLayoutManager(this));
         mManager.setStackFromEnd(true);
 
-        getChildren();
+        Query mostRecent = ref.limitToLast(25);
 
-        mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, ref) {
+        mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, mostRecent) {
             @Override
             protected void populateViewHolder(CommentHolder viewHolder, Comment model, int position) {
                 viewHolder.setName(model.getUser());
                 viewHolder.setComment(model.getContent());
             }
         };
+
+
+
+        //final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int children = mAdapter.getItemCount();
+                int lastPosition = mManager.findLastVisibleItemPosition();
+
+                if (lastPosition == -1 || (positionStart >= (children -1) && lastPosition == (positionStart -1))) {
+                    mMessages.scrollToPosition(positionStart);
+                }
+            }
+        });
 
         mMessages.setAdapter(mAdapter);
 
@@ -115,26 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Comment comment = new Comment(message, userName);
             mFirebaseRef.push().setValue(comment);
             mCommentEditText.setText("");
-            getChildren();
         }
     };
-
-    public void getChildren() {
-        mFirebaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long kids = dataSnapshot.getChildrenCount();
-                int children = (int) kids;
-                mMessages.scrollToPosition(children -1);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-            }
-        });
-
-    }
-
 
     @Override
     public void onStart() {
@@ -148,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+        //mAdapter.unregisterDataSetObserver();
     }
 
     @Override
