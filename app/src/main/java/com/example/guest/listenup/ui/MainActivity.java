@@ -73,18 +73,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         mManager = new LinearLayoutManager(this);
-        mManager.setReverseLayout(false);
 
         mMessages.setHasFixedSize(false);
         mMessages.setLayoutManager(mManager);
 
-//        mMessages.scrollToPosition(getChildren());
-
         mMessages.setHasFixedSize(true);
+
         mMessages.setLayoutManager(new LinearLayoutManager(this));
         mManager.setStackFromEnd(true);
 
-        Query lastFifty = ref.limitToLast(50);
+        Query lastFifty = ref.limitToLast(6);
         mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, lastFifty) {
             @Override
             protected void populateViewHolder(CommentHolder viewHolder, Comment model, int position) {
@@ -112,21 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSend.setOnClickListener(this);
     }
 
-//    private void scrollToBottom() {
-//        mRecyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//            @Override
-//            public void onItemRangeInserted(int positionStart, int itemCount) {
-//                mManager.smoothScrollToPosition(mMessages, null, mRecyclerViewAdapter.getItemCount());
-//            }
-//        });
-//    }
-
     @Override
     public void onClick(View v) {
         if (v == mSend) {
             getChildren();
-            //int hello = getChildren();
-            //mMessages.scrollToPosition(hello - 1);
             String message = mCommentEditText.getText().toString();
             Comment comment = new Comment(message, userName);
             mFirebaseRef.push().setValue(comment);
@@ -140,9 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("stuff", dataSnapshot.getChildrenCount() +"");
-                children = dataSnapshot.getChildrenCount();
-                childInt = (int) (long) children;
-                mMessages.scrollToPosition(childInt - 1);
             }
 
             @Override
@@ -150,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-        //mMessages.scrollToPosition(childInt);
     }
 
 
