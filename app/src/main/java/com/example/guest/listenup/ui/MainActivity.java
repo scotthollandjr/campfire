@@ -74,16 +74,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mManager = new LinearLayoutManager(this);
 
-        mMessages.setHasFixedSize(false);
         mMessages.setLayoutManager(mManager);
-
-        mMessages.setHasFixedSize(true);
 
         mMessages.setLayoutManager(new LinearLayoutManager(this));
         mManager.setStackFromEnd(true);
 
-        Query lastFifty = ref.limitToLast(6);
-        mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, lastFifty) {
+        getChildren();
+
+        mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, ref) {
             @Override
             protected void populateViewHolder(CommentHolder viewHolder, Comment model, int position) {
                 viewHolder.setName(model.getUser());
@@ -113,12 +111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mSend) {
-            getChildren();
             String message = mCommentEditText.getText().toString();
             Comment comment = new Comment(message, userName);
             mFirebaseRef.push().setValue(comment);
-
             mCommentEditText.setText("");
+            getChildren();
         }
     };
 
@@ -126,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("stuff", dataSnapshot.getChildrenCount() +"");
+                long kids = dataSnapshot.getChildrenCount();
+                int children = (int) kids;
+                mMessages.scrollToPosition(children -1);
             }
 
             @Override
