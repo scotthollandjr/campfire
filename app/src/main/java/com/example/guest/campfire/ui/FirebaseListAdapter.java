@@ -1,4 +1,4 @@
-package com.example.guest.listenup.adapters;
+package com.example.guest.campfire.ui;
 
         import android.app.Activity;
         import android.util.Log;
@@ -13,9 +13,7 @@ package com.example.guest.listenup.adapters;
         import com.firebase.client.Query;
 
         import java.util.ArrayList;
-        import java.util.HashMap;
         import java.util.List;
-        import java.util.Map;
 
 /**
  * @author greg

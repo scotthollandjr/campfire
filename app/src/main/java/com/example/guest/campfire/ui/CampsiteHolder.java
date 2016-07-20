@@ -1,16 +1,16 @@
-package com.example.guest.listenup.ui;
+package com.example.guest.campfire.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.guest.listenup.R;
+import com.example.guest.campfire.R;
 
 
-public class CommentHolder extends RecyclerView.ViewHolder {
+public class CampsiteHolder extends RecyclerView.ViewHolder {
     View mView;
 
-    public CommentHolder(View itemView) {
+    public CampsiteHolder(View itemView) {
         super(itemView);
         mView = itemView;
     }

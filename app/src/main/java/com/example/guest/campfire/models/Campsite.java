@@ -1,15 +1,15 @@
-package com.example.guest.listenup.models;
+package com.example.guest.campfire.models;
 
 /**
  * Created by Guest on 7/14/16.
  */
-public class Comment {
+public class Campsite {
     private String content;
     private String user;
 
-    public Comment() {}
+    public Campsite() {}
 
-    public Comment(String content, String user) {
+    public Campsite(String content, String user) {
         this.content = content;
         this.user = user;
     }

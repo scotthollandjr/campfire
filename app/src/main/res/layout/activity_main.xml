@@ -4,55 +4,27 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.guest.listenup.ui.MainActivity"
+    tools:context="com.example.guest.campfire.ui.MainActivity"
     app:stackFromEnd="true"
     app:reverseLayout="true">
 
-    <ScrollView
-        android:id="@+id/activity_chat_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:padding="10dp" >
+    <Spinner
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/statesSpinner"
+        android:entries="@array/states_array"
+        android:prompt="@string/spinner_prompt"
+        android:layout_above="@+id/submitButton"
+        android:layout_alignLeft="@+id/submitButton"
+        android:layout_alignStart="@+id/submitButton" />
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/footer"/>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/footer"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="get camps"
+        android:id="@+id/submitButton"
         android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/commentEditText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:inputType="textShortMessage" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onSendButtonClick"
-            android:id="@+id/sendButton"
-            android:text="Send" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/messagesList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footer"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:clipToPadding="false"
-        android:padding="16dp"
-        tools:listitem="@layout/message" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp" />
 
 </RelativeLayout>

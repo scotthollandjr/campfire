@@ -1,4 +1,4 @@
-package com.example.guest.listenup.ui;
+package com.example.guest.campfire.ui;
 
 
 import android.content.Intent;
@@ -8,25 +8,24 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 
 
-import com.example.guest.listenup.R;
-import com.example.guest.listenup.models.Comment;
-import com.firebase.client.DataSnapshot;
+import com.example.guest.campfire.R;
+import com.example.guest.campfire.models.Campsite;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,10 +40,10 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    @Bind(R.id.commentEditText) EditText mCommentEditText;
-    @Bind(R.id.sendButton) Button mSend;
-    @Bind(android.R.id.list) ListView mList;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    @Bind(R.id.statesSpinner) Spinner mStatesSpinner;
+    @Bind(R.id.submitButton) Button mSubmit;
+//    private Spinner stateSpinner;
     private Firebase mFirebaseRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -52,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mMessages;
     private LinearLayoutManager mManager;
     private ScrollView mScrollView;
-    private FirebaseListAdapter<Comment> mAdapter;
-    private ArrayList<Comment> commentList;
+    private FirebaseListAdapter<Campsite> mAdapter;
+    private ArrayList<Campsite> campsiteList;
     private long children;
     private int childInt;
 
@@ -64,48 +63,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         Firebase.setAndroidContext(this);
 
-        mScrollView = (ScrollView) findViewById(R.id.activity_chat_scroll_view);
-        final FirebaseRecyclerAdapter<Comment, CommentHolder> mAdapter;
-        mFirebaseRef = new Firebase("https://listenup-51c14.firebaseio.com/");
+        final FirebaseRecyclerAdapter<Campsite, CampsiteHolder> mAdapter;
+        mFirebaseRef = new Firebase("https://campfire-75336.firebaseio.com/");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        mMessages = (RecyclerView) findViewById(R.id.messagesList);
 
-
-
-        mManager = new LinearLayoutManager(this);
-
-        mMessages.setLayoutManager(mManager);
-
-        mMessages.setLayoutManager(new LinearLayoutManager(this));
-        mManager.setStackFromEnd(true);
-
-        Query mostRecent = ref.limitToLast(25);
-
-        mAdapter = new FirebaseRecyclerAdapter<Comment, CommentHolder>(Comment.class, R.layout.message, CommentHolder.class, mostRecent) {
-            @Override
-            protected void populateViewHolder(CommentHolder viewHolder, Comment model, int position) {
-                viewHolder.setName(model.getUser());
-                viewHolder.setComment(model.getContent());
-            }
-        };
-
-
-
-        //final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                int children = mAdapter.getItemCount();
-                int lastPosition = mManager.findLastVisibleItemPosition();
-
-                if (lastPosition == -1 || (positionStart >= (children -1) && lastPosition == (positionStart -1))) {
-                    mMessages.scrollToPosition(positionStart);
-                }
-            }
-        });
-
-        mMessages.setAdapter(mAdapter);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -121,16 +82,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        mSend.setOnClickListener(this);
+        mSubmit.setOnClickListener(this);
+
+        Spinner spinner = (Spinner) findViewById(R.id.statesSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.states_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setPrompt("Select a state");
+        spinner.setAdapter(adapter);
     }
+
 
     @Override
     public void onClick(View v) {
-        if (v == mSend) {
-            String message = mCommentEditText.getText().toString();
-            Comment comment = new Comment(message, userName);
-            mFirebaseRef.push().setValue(comment);
-            mCommentEditText.setText("");
+        if(v == mSubmit){
+            String state = mStatesSpinner.getSelectedItem().toString();
+            Intent intent = new Intent(MainActivity.this, CampSitesActivity.class);
+            intent.putExtra("state", state);
+            startActivity(intent);
         }
     };
 
