@@ -1,9 +1,17 @@
 package com.example.guest.campfire.service;
 
+import android.util.Xml;
+
 import com.example.guest.campfire.Constants;
 import com.example.guest.campfire.models.Campsite;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,9 +44,25 @@ public class ApiService {
         call.enqueue(callback);
     }
 
-    public ArrayList<Campsite> processResults(Response response) {
-        ArrayList<Campsite> campsites = new ArrayList<>();
+    public class CampsiteParser {
 
-        return campsites;
+        public List parse(InputStream in) throws XmlPullParserException, IOException {
+
+            try {
+                XmlPullParser parser = Xml.newPullParser();
+                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+                parser.setInput(in, null);
+                parser.nextTag();
+                return readFeed(parser);
+            } finally {
+                in.close();
+            }
+        }
+    }
+
+    private List readFeed(XmlPullParserException parser) throws XmlPullParserException, IOException {
+        List entries = new ArrayList();
+
+        parser.require(XmlPullParser.st)
     }
 }
