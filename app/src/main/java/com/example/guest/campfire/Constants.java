@@ -7,4 +7,5 @@ import com.example.guest.campfire.BuildConfig;
  */
 public class Constants {
     public static final String API_KEY = BuildConfig.CAMPGROUND_API;
+    public static final String GOOGLE_KEY = BuildConfig.GOOGLE_API;
 }

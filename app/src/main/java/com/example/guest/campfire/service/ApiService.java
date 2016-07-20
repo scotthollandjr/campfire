@@ -5,8 +5,15 @@ import android.util.Xml;
 import com.example.guest.campfire.Constants;
 import com.example.guest.campfire.models.Campsite;
 
+import java.io.IOException;
+import java.io.StringReader;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +32,8 @@ import se.akerfeldt.okhttp.signpost.SigningInterceptor;
 
 
 public class ApiService {
-    private static final String URL = "http://api.amp.active.com/camping/campgrounds/?pstate=";
-    private static final String URL_API = "&api_key=";
+    private static final String URL = "https://api.transitandtrails.org//api/v1/campgrounds.json?key=";
+    //private static final String URL_API = "&api_key=";
 
     public ArrayList<Campsite> mCampsites = new ArrayList<>();
 
@@ -34,7 +41,7 @@ public class ApiService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
-        String url = URL + state + URL_API + Constants.API_KEY;
+        String url = URL + Constants.API_KEY;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -44,25 +51,8 @@ public class ApiService {
         call.enqueue(callback);
     }
 
-    public class CampsiteParser {
-
-        public List parse(InputStream in) throws XmlPullParserException, IOException {
-
-            try {
-                XmlPullParser parser = Xml.newPullParser();
-                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-                parser.setInput(in, null);
-                parser.nextTag();
-                return readFeed(parser);
-            } finally {
-                in.close();
-            }
-        }
-    }
-
-    private List readFeed(XmlPullParserException parser) throws XmlPullParserException, IOException {
-        List entries = new ArrayList();
-
-        parser.require(XmlPullParser.st)
+    public ArrayList<Campsite> processResults(Response response) {
+        ArrayList<Campsite> campsites = new ArrayList<>();
+        return campsites;
     }
 }

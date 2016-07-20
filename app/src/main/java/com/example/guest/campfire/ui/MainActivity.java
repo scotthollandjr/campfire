@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import com.example.guest.campfire.R;
@@ -43,6 +44,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Bind(R.id.statesSpinner) Spinner mStatesSpinner;
     @Bind(R.id.submitButton) Button mSubmit;
+    @Bind(R.id.zipEditText) EditText mZipEditText;
 //    private Spinner stateSpinner;
     private Firebase mFirebaseRef;
     private FirebaseAuth mAuth;
@@ -94,10 +96,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v == mSubmit){
-            String state = mStatesSpinner.getSelectedItem().toString();
-            Intent intent = new Intent(MainActivity.this, CampSitesActivity.class);
-            intent.putExtra("state", state);
+        if(v == mSubmit) {
+            //String state = mStatesSpinner.getSelectedItem().toString();
+            String zip = mZipEditText.getText().toString();
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            intent.putExtra("zip", zip);
             startActivity(intent);
         }
     };
