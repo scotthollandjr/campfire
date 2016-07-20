@@ -1,8 +1,6 @@
-# ListenUp
+# campfire
 
-Chat app for Epicodus Android Development course.
-
-This project will demonstrate proficiency in Java and Android Development.
+Experimental android app
 
 ## Prerequisites
 
@@ -13,7 +11,7 @@ You will need the following things properly installed on your computer.
 
 ## Installation
 
-* `git clone <https://github.com/theAppanaut/ListenUp.git>` this repository
+* `git clone <https://github.com/theAppanaut/campfire.git>` this repository
 * change into the new directory
 * open in Android Studios
 
