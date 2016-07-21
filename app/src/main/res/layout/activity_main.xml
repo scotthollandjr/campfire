@@ -8,20 +8,20 @@
     app:stackFromEnd="true"
     app:reverseLayout="true">
 
-    <Spinner
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/statesSpinner"
-        android:entries="@array/states_array"
-        android:prompt="@string/spinner_prompt"
-        android:layout_above="@+id/submitButton"
-        android:layout_alignLeft="@+id/submitButton"
-        android:layout_alignStart="@+id/submitButton" />
+    <!--<Spinner-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/statesSpinner"-->
+        <!--android:entries="@array/states_array"-->
+        <!--android:prompt="@string/spinner_prompt"-->
+        <!--android:layout_above="@+id/submitButton"-->
+        <!--android:layout_alignLeft="@+id/submitButton"-->
+        <!--android:layout_alignStart="@+id/submitButton" />-->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="get camps"
+        android:text="find markets"
         android:id="@+id/submitButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/zipEditText"
-        android:layout_above="@+id/statesSpinner"
+        android:layout_above="@+id/submitButton"
         android:layout_centerHorizontal="true"
         android:hint="zip code pls" />
 

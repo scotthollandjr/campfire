@@ -39,10 +39,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    @Bind(R.id.statesSpinner) Spinner mStatesSpinner;
     @Bind(R.id.submitButton) Button mSubmit;
     @Bind(R.id.zipEditText) EditText mZipEditText;
-//    private Spinner stateSpinner;
+    //@Bind(R.id.statesSpinner) Spinner mStatesSpinner;
+    //    private Spinner stateSpinner;
     private Firebase mFirebaseRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mSubmit.setOnClickListener(this);
 
-        Spinner spinner = (Spinner) findViewById(R.id.statesSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.states_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setPrompt("Select a state");
-        spinner.setAdapter(adapter);
+//        Spinner spinner = (Spinner) findViewById(R.id.statesSpinner);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.states_array, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setPrompt("Select a state");
+//        spinner.setAdapter(adapter);
     }
 
 

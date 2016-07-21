@@ -8,12 +8,7 @@ import android.widget.TextView;
 
 import com.example.guest.campfire.R;
 import com.example.guest.campfire.models.Market;
-import com.example.guest.campfire.models.Market;
 import com.example.guest.campfire.service.ApiService;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,14 +27,12 @@ public class MarketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camp_sites);
+        setContentView(R.layout.activity_market);
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
         String zip = intent.getStringExtra("zip");
         mStateTextView.setText(zip);
-
-        getMarkets(zip);
     }
 
     public void getMarkets(String zip) {
