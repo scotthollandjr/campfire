@@ -11,6 +11,10 @@ import com.example.guest.campfire.models.Market;
 import com.example.guest.campfire.models.Market;
 import com.example.guest.campfire.service.ApiService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -22,6 +26,7 @@ import okhttp3.Response;
 
 public class MarketActivity extends AppCompatActivity {
     public static ArrayList<Market> mMarkets = new ArrayList<>();
+    public static ArrayList<String> ids = new ArrayList<>();
     @Bind(R.id.stateTextView) TextView mStateTextView;
 
     @Override
@@ -37,10 +42,10 @@ public class MarketActivity extends AppCompatActivity {
         getMarkets(zip);
     }
 
-    public void getMarkets(String state) {
+    public void getMarkets(String zip) {
         final ApiService apiService = new ApiService();
 
-        apiService.findMarkets(state, new Callback() {
+        apiService.findMarkets(zip, new Callback() {
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -49,20 +54,41 @@ public class MarketActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                mMarkets = apiService.processResults(response);
+                ids = apiService.getIds(response); //<------list of ids!-------
+
+                    final ApiService apiService = new ApiService();
+
+                    for (String id : ids) {
+                        apiService.getMarketDetails(id, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                Market market = apiService.processResults(response);
+                                Log.d("CUBONE", "onreponse: " + market.getAddress());
+                                mMarkets.add(market);
+                            }
+
+                    });
+                }
 
                 MarketActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
-                        Log.d("CUBONE", "response: " + response);
 
-//                        String[] sites = new String[mCampsites.size()];
-//                        for (int i = 0; i < sites.length; i++) {
-//                            sites[i] = mCampsites.get(i).getName();
+    //                        String[] sites = new String[mCampsites.size()];
+    //                        for (int i = 0; i < sites.length; i++) {
+    //                            sites[i] = mCampsites.get(i).getName();
                         }
                     });
                 }
             });
-        }
     }
+
+
+
+    }
+
+
