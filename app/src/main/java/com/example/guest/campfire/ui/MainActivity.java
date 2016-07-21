@@ -8,24 +8,22 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 
 import com.example.guest.campfire.R;
-import com.example.guest.campfire.models.Campsite;
+import com.example.guest.campfire.models.Market;
 import com.firebase.client.Firebase;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -33,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 
 import java.util.ArrayList;
@@ -53,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mMessages;
     private LinearLayoutManager mManager;
     private ScrollView mScrollView;
-    private FirebaseListAdapter<Campsite> mAdapter;
-    private ArrayList<Campsite> campsiteList;
+    private FirebaseListAdapter<Market> mAdapter;
+    private ArrayList<Market> marketList;
     private long children;
     private int childInt;
 
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         Firebase.setAndroidContext(this);
 
-        final FirebaseRecyclerAdapter<Campsite, CampsiteHolder> mAdapter;
+        final FirebaseRecyclerAdapter<Market, MarketHolder> mAdapter;
         mFirebaseRef = new Firebase("https://campfire-75336.firebaseio.com/");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v == mSubmit) {
             //String state = mStatesSpinner.getSelectedItem().toString();
             String zip = mZipEditText.getText().toString();
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            Intent intent = new Intent(MainActivity.this, MarketActivity.class);
             intent.putExtra("zip", zip);
             startActivity(intent);
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.guest.campfire" >
+    package="com.example.guest.campfire">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,21 +12,22 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="campfire"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.CreateAccountActivity" />
-        <activity android:name=".ui.LoginActivity" >
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CampSitesActivity" />
+        <activity android:name=".ui.MarketActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -42,6 +43,7 @@
         <activity
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps" />
+        <activity android:name=".ui.TempActivity"></activity>
     </application>
 
 </manifest>

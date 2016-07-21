@@ -7,10 +7,10 @@ import android.widget.TextView;
 import com.example.guest.campfire.R;
 
 
-public class CampsiteHolder extends RecyclerView.ViewHolder {
+public class MarketHolder extends RecyclerView.ViewHolder {
     View mView;
 
-    public CampsiteHolder(View itemView) {
+    public MarketHolder(View itemView) {
         super(itemView);
         mView = itemView;
     }
